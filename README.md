@@ -27,15 +27,27 @@ This is a Next.js implementation of the Leave Management System. The application
 ### Prerequisites
 
 - Node.js 18+
-- pnpm (recommended) or npm
+- pnpm (recommended) or npm or yarn
 
 ### Installation
 
 1. **Install dependencies**:
 
-   ```bash
-   pnpm install
-   ```
+```bash
+pnpm install
+```
+
+OR
+
+```bash
+npm install
+```
+
+OR
+
+```bash
+yarn install
+```
 
 2. **Set up the database**:
 
@@ -83,6 +95,7 @@ src/
 │   ├── dashboard/         # Dashboard page
 │   └── page.tsx          # Home/login page
 ├── components/            # React components
+│   ├── index.ts          # Barrel file
 │   ├── Login.tsx
 │   ├── LeaveForm.tsx
 │   ├── LeavesList.tsx
