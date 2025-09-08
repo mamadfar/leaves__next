@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
-import { useEmployeeLeaves, useManagerLeaves } from '@/hooks/useLeaves';
-import { useLeaveBalance } from '@/hooks/useLeaveBalance';
-import LeaveForm from '@/components/LeaveForm';
-import LeavesList from '@/components/LeavesList';
-import LeaveBalance from '@/components/LeaveBalance';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import { useEmployeeLeaves, useManagerLeaves } from "@/hooks/useLeaves";
+import { useLeaveBalance } from "@/hooks/useLeaveBalance";
+import LeaveForm from "@/components/LeaveForm";
+import LeavesList from "@/components/LeavesList";
+import LeaveBalance from "@/components/LeaveBalance";
 
 export default function Dashboard() {
   const { isAuthenticated, getCurrentUser, logout, isManager } = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState('my-leaves');
+  const [activeTab, setActiveTab] = useState("my-leaves");
   const currentUser = getCurrentUser();
 
   // Data hooks
@@ -20,11 +20,13 @@ export default function Dashboard() {
   const { data: managerLeaves, isLoading: managerLeavesLoading } = useManagerLeaves(
     isManager() ? currentUser?.employeeId : undefined
   );
-  const { data: leaveBalance, isLoading: balanceLoading } = useLeaveBalance(currentUser?.employeeId);
+  const { data: leaveBalance, isLoading: balanceLoading } = useLeaveBalance(
+    currentUser?.employeeId
+  );
 
   useEffect(() => {
     if (!isAuthenticated()) {
-      router.push('/');
+      router.push("/");
     }
   }, [isAuthenticated, router]);
 
@@ -32,7 +34,7 @@ export default function Dashboard() {
     return null;
   }
 
-  const pendingApprovals = managerLeaves?.filter(leave => leave.status === 'REQUESTED') || [];
+  const pendingApprovals = managerLeaves?.filter((leave) => leave.status === "REQUESTED") || [];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -61,42 +63,42 @@ export default function Dashboard() {
           <div className="border-b border-gray-200">
             <nav className="-mb-px flex space-x-8">
               <button
-                onClick={() => setActiveTab('my-leaves')}
+                onClick={() => setActiveTab("my-leaves")}
                 className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'my-leaves'
-                    ? 'border-indigo-500 text-indigo-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  activeTab === "my-leaves"
+                    ? "border-indigo-500 text-indigo-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 My Leaves
               </button>
               <button
-                onClick={() => setActiveTab('request-leave')}
+                onClick={() => setActiveTab("request-leave")}
                 className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'request-leave'
-                    ? 'border-indigo-500 text-indigo-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  activeTab === "request-leave"
+                    ? "border-indigo-500 text-indigo-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 Request Leave
               </button>
               <button
-                onClick={() => setActiveTab('balance')}
+                onClick={() => setActiveTab("balance")}
                 className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'balance'
-                    ? 'border-indigo-500 text-indigo-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  activeTab === "balance"
+                    ? "border-indigo-500 text-indigo-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 Leave Balance
               </button>
               {isManager() && (
                 <button
-                  onClick={() => setActiveTab('approvals')}
+                  onClick={() => setActiveTab("approvals")}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'approvals'
-                      ? 'border-indigo-500 text-indigo-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    activeTab === "approvals"
+                      ? "border-indigo-500 text-indigo-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                   }`}
                 >
                   Pending Approvals {pendingApprovals.length > 0 && `(${pendingApprovals.length})`}
@@ -107,7 +109,7 @@ export default function Dashboard() {
 
           {/* Tab Content */}
           <div className="mt-6">
-            {activeTab === 'my-leaves' && (
+            {activeTab === "my-leaves" && (
               <LeavesList
                 leaves={myLeaves || []}
                 isLoading={myLeavesLoading}
@@ -117,18 +119,15 @@ export default function Dashboard() {
               />
             )}
 
-            {activeTab === 'request-leave' && (
-              <LeaveForm onSuccess={() => setActiveTab('my-leaves')} />
+            {activeTab === "request-leave" && (
+              <LeaveForm onSuccess={() => setActiveTab("my-leaves")} />
             )}
 
-            {activeTab === 'balance' && (
-              <LeaveBalance
-                balance={leaveBalance}
-                isLoading={balanceLoading}
-              />
+            {activeTab === "balance" && (
+              <LeaveBalance balance={leaveBalance} isLoading={balanceLoading} />
             )}
 
-            {activeTab === 'approvals' && isManager() && (
+            {activeTab === "approvals" && isManager() && (
               <LeavesList
                 leaves={pendingApprovals}
                 isLoading={managerLeavesLoading}

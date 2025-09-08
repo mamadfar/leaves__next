@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { useCreateLeave } from '@/hooks/useLeaves';
-import { ICreateLeaveRequest, LeaveType, SpecialLeaveType } from '@/types/Leave.type';
+import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useCreateLeave } from "@/hooks/useLeaves";
+import { ICreateLeaveRequest, LeaveType, SpecialLeaveType } from "@/types/Leave.type";
 
 interface LeaveFormProps {
   onSuccess: () => void;
@@ -15,15 +15,15 @@ export default function LeaveForm({ onSuccess }: LeaveFormProps) {
   const currentUser = getCurrentUser();
 
   const [formData, setFormData] = useState<ICreateLeaveRequest>({
-    leaveLabel: '',
-    employeeId: currentUser?.employeeId || '',
+    leaveLabel: "",
+    employeeId: currentUser?.employeeId || "",
     startOfLeave: getDefaultStartDateString(),
     endOfLeave: getDefaultEndDateString(),
     leaveType: LeaveType.REGULAR,
   });
 
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   function getDefaultStartDateString(): string {
     const tomorrow = new Date();
@@ -41,17 +41,17 @@ export default function LeaveForm({ onSuccess }: LeaveFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage('');
-    setSuccessMessage('');
+    setErrorMessage("");
+    setSuccessMessage("");
 
     try {
       await createLeaveMutation.mutateAsync(formData);
-      setSuccessMessage('Leave request submitted successfully!');
-      
+      setSuccessMessage("Leave request submitted successfully!");
+
       // Reset form
       setFormData({
-        leaveLabel: '',
-        employeeId: currentUser?.employeeId || '',
+        leaveLabel: "",
+        employeeId: currentUser?.employeeId || "",
         startOfLeave: getDefaultStartDateString(),
         endOfLeave: getDefaultEndDateString(),
         leaveType: LeaveType.REGULAR,
@@ -62,20 +62,20 @@ export default function LeaveForm({ onSuccess }: LeaveFormProps) {
         onSuccess();
       }, 1500);
     } catch (error: any) {
-      setErrorMessage(error.response?.data?.error || 'Failed to create leave request');
+      setErrorMessage(error.response?.data?.error || "Failed to create leave request");
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
 
     // Reset special leave type when changing leave type
-    if (name === 'leaveType' && value !== LeaveType.SPECIAL) {
-      setFormData(prev => ({
+    if (name === "leaveType" && value !== LeaveType.SPECIAL) {
+      setFormData((prev) => ({
         ...prev,
         specialLeaveType: undefined,
       }));
@@ -85,7 +85,7 @@ export default function LeaveForm({ onSuccess }: LeaveFormProps) {
   return (
     <div className="bg-white shadow rounded-lg p-6">
       <h2 className="text-lg font-medium text-gray-900 mb-6">Request New Leave</h2>
-      
+
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label htmlFor="leaveLabel" className="block text-sm font-medium text-gray-700">
@@ -159,7 +159,7 @@ export default function LeaveForm({ onSuccess }: LeaveFormProps) {
             <select
               id="specialLeaveType"
               name="specialLeaveType"
-              value={formData.specialLeaveType || ''}
+              value={formData.specialLeaveType || ""}
               onChange={handleInputChange}
               required
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -173,13 +173,9 @@ export default function LeaveForm({ onSuccess }: LeaveFormProps) {
           </div>
         )}
 
-        {errorMessage && (
-          <div className="text-red-600 text-sm">{errorMessage}</div>
-        )}
+        {errorMessage && <div className="text-red-600 text-sm">{errorMessage}</div>}
 
-        {successMessage && (
-          <div className="text-green-600 text-sm">{successMessage}</div>
-        )}
+        {successMessage && <div className="text-green-600 text-sm">{successMessage}</div>}
 
         <div className="flex justify-end">
           <button
@@ -187,7 +183,7 @@ export default function LeaveForm({ onSuccess }: LeaveFormProps) {
             disabled={createLeaveMutation.isPending}
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium disabled:opacity-50"
           >
-            {createLeaveMutation.isPending ? 'Submitting...' : 'Submit Request'}
+            {createLeaveMutation.isPending ? "Submitting..." : "Submit Request"}
           </button>
         </div>
       </form>

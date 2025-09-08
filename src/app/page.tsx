@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
-import Login from '@/components/Login';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import Login from "@/components/Login";
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
@@ -11,7 +11,7 @@ export default function Home() {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      router.push('/dashboard');
+      router.push("/dashboard");
     }
   }, [isAuthenticated, router]);
 

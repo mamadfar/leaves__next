@@ -1,33 +1,33 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
-import { useLogin } from '@/hooks/useAuth';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import { useLogin } from "@/hooks/useAuth";
 
 export default function Login() {
-  const [employeeId, setEmployeeId] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [employeeId, setEmployeeId] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const { login } = useAuth();
   const router = useRouter();
   const loginMutation = useLogin();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!employeeId) {
-      setErrorMessage('Please enter an employee ID');
+      setErrorMessage("Please enter an employee ID");
       return;
     }
 
-    setErrorMessage('');
+    setErrorMessage("");
 
     try {
       const user = await loginMutation.mutateAsync(employeeId);
       login(user);
-      router.push('/dashboard');
+      router.push("/dashboard");
     } catch (error: any) {
-      setErrorMessage(error.response?.data?.error || 'Login failed. Please try again.');
+      setErrorMessage(error.response?.data?.error || "Login failed. Please try again.");
     }
   };
 
@@ -48,9 +48,7 @@ export default function Login() {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Leave Management System
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Sign in with your employee ID
-          </p>
+          <p className="mt-2 text-center text-sm text-gray-600">Sign in with your employee ID</p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
           <div>
@@ -69,9 +67,7 @@ export default function Login() {
             />
           </div>
 
-          {errorMessage && (
-            <div className="text-red-600 text-sm text-center">{errorMessage}</div>
-          )}
+          {errorMessage && <div className="text-red-600 text-sm text-center">{errorMessage}</div>}
 
           <div>
             <button
@@ -79,7 +75,7 @@ export default function Login() {
               disabled={loginMutation.isPending}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
             >
-              {loginMutation.isPending ? 'Signing in...' : 'Sign in'}
+              {loginMutation.isPending ? "Signing in..." : "Sign in"}
             </button>
           </div>
         </form>
@@ -97,7 +93,7 @@ export default function Login() {
           <div className="mt-6 grid grid-cols-1 gap-3">
             <button
               type="button"
-              onClick={() => quickLogin('K012345')}
+              onClick={() => quickLogin("K012345")}
               disabled={loginMutation.isPending}
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
             >
@@ -105,7 +101,7 @@ export default function Login() {
             </button>
             <button
               type="button"
-              onClick={() => quickLogin('K000001')}
+              onClick={() => quickLogin("K000001")}
               disabled={loginMutation.isPending}
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
             >
@@ -113,7 +109,7 @@ export default function Login() {
             </button>
             <button
               type="button"
-              onClick={() => quickLogin('K012346')}
+              onClick={() => quickLogin("K012346")}
               disabled={loginMutation.isPending}
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
             >

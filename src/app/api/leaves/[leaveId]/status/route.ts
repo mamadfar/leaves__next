@@ -1,22 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { LeaveBusinessRulesService } from '@/lib/leave-business-rules';
-import { LeaveStatus, LeaveType } from '@prisma/client';
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { LeaveBusinessRulesService } from "@/lib/leave-business-rules";
+import { LeaveStatus, LeaveType } from "@prisma/client";
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { leaveId: string } }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: { leaveId: string } }) {
   try {
     const { leaveId } = params;
     const body = await request.json();
     const { status, approverId } = body;
 
     if (!Object.values(LeaveStatus).includes(status)) {
-      return NextResponse.json(
-        { error: 'Invalid status value' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid status value" }, { status: 400 });
     }
 
     // Verify approver has permission
@@ -30,15 +24,12 @@ export async function PATCH(
     });
 
     if (!leave) {
-      return NextResponse.json(
-        { error: 'Leave not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Leave not found" }, { status: 404 });
     }
 
     if (leave.employee.managerId !== approverId) {
       return NextResponse.json(
-        { error: 'Approver not authorized for this leave' },
+        { error: "Approver not authorized for this leave" },
         { status: 403 }
       );
     }
@@ -75,7 +66,7 @@ export async function PATCH(
       if (employee) {
         const limits = LeaveBusinessRulesService.getSpecialLeaveLimit(
           leave.specialLeaveType,
-          employee.contractHours,
+          employee.contractHours
         );
 
         // Update or create special leave usage record
@@ -110,10 +101,7 @@ export async function PATCH(
 
     return NextResponse.json(updatedLeave);
   } catch (error) {
-    console.error('Error updating leave status:', error);
-    return NextResponse.json(
-      { error: 'Failed to update leave status' },
-      { status: 500 }
-    );
+    console.error("Error updating leave status:", error);
+    return NextResponse.json({ error: "Failed to update leave status" }, { status: 500 });
   }
 }

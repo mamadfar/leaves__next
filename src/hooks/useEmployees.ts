@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useQuery } from '@tanstack/react-query';
-import { employeeService } from '@/services/employeeService';
+import { useQuery } from "@tanstack/react-query";
+import { employeeService } from "@/services/employeeService";
 
 export const useEmployees = () => {
   return useQuery({
-    queryKey: ['employees'],
+    queryKey: ["employees"],
     queryFn: employeeService.getEmployees,
   });
 };

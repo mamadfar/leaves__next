@@ -1,5 +1,5 @@
-import api from './api';
-import { ILeave, ICreateLeaveRequest } from '@/types/Leave.type';
+import api from "./api";
+import { ILeave, ICreateLeaveRequest } from "@/types/Leave.type";
 
 export const leaveService = {
   getEmployeeLeaves: async (employeeId: string): Promise<ILeave[]> => {
@@ -13,7 +13,7 @@ export const leaveService = {
   },
 
   createLeave: async (leaveData: ICreateLeaveRequest): Promise<ILeave> => {
-    const response = await api.post('/leaves', leaveData);
+    const response = await api.post("/leaves", leaveData);
     return response.data.leave;
   },
 

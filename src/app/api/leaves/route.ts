@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { LeaveBusinessRulesService } from '@/lib/leave-business-rules';
-import { LeaveStatus, LeaveType, SpecialLeaveType } from '@prisma/client';
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { LeaveBusinessRulesService } from "@/lib/leave-business-rules";
+import { LeaveStatus, LeaveType, SpecialLeaveType } from "@prisma/client";
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,10 +16,7 @@ export async function POST(request: NextRequest) {
     } = body;
 
     if (!leaveLabel || !employeeId || !startOfLeave || !endOfLeave) {
-      return NextResponse.json(
-        { error: 'All required fields must be provided' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "All required fields must be provided" }, { status: 400 });
     }
 
     const startDate = new Date(startOfLeave);
@@ -32,10 +29,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!employee) {
-      return NextResponse.json(
-        { error: 'Employee not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Employee not found" }, { status: 404 });
     }
 
     // Validate business rules
@@ -51,7 +45,7 @@ export async function POST(request: NextRequest) {
     if (!validation.isValid) {
       return NextResponse.json(
         {
-          error: 'Leave request violates business rules',
+          error: "Leave request violates business rules",
           details: validation.errors,
         },
         { status: 400 }
@@ -64,22 +58,13 @@ export async function POST(request: NextRequest) {
         employeeId,
         OR: [
           {
-            AND: [
-              { startOfLeave: { lte: startDate } },
-              { endOfLeave: { gte: startDate } }
-            ],
+            AND: [{ startOfLeave: { lte: startDate } }, { endOfLeave: { gte: startDate } }],
           },
           {
-            AND: [
-              { startOfLeave: { lte: endDate } },
-              { endOfLeave: { gte: endDate } }
-            ],
+            AND: [{ startOfLeave: { lte: endDate } }, { endOfLeave: { gte: endDate } }],
           },
           {
-            AND: [
-              { startOfLeave: { gte: startDate } },
-              { endOfLeave: { lte: endDate } }
-            ],
+            AND: [{ startOfLeave: { gte: startDate } }, { endOfLeave: { lte: endDate } }],
           },
         ],
         status: { notIn: [LeaveStatus.REJECTED, LeaveStatus.CANCELLED, LeaveStatus.CLOSED] },
@@ -87,10 +72,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (overlappingLeaves.length > 0) {
-      return NextResponse.json(
-        { error: 'Overlapping leave exists' },
-        { status: 409 }
-      );
+      return NextResponse.json({ error: "Overlapping leave exists" }, { status: 409 });
     }
 
     // Calculate total hours for the leave
@@ -101,7 +83,7 @@ export async function POST(request: NextRequest) {
       const currentYear = startDate.getFullYear();
       const limits = LeaveBusinessRulesService.getSpecialLeaveLimit(
         specialLeaveType,
-        employee.contractHours,
+        employee.contractHours
       );
 
       // Get current usage
@@ -135,7 +117,7 @@ export async function POST(request: NextRequest) {
 
       if (!leaveBalance) {
         return NextResponse.json(
-          { error: 'Leave balance not found for current year' },
+          { error: "Leave balance not found for current year" },
           { status: 400 }
         );
       }
@@ -153,15 +135,12 @@ export async function POST(request: NextRequest) {
         },
       });
 
-      const currentUsedHours = approvedLeaves.reduce(
-        (total, leave) => total + leave.totalHours,
-        0,
-      );
+      const currentUsedHours = approvedLeaves.reduce((total, leave) => total + leave.totalHours, 0);
 
       if (currentUsedHours + totalHours > leaveBalance.totalHours) {
         return NextResponse.json(
           {
-            error: 'Insufficient leave balance',
+            error: "Insufficient leave balance",
             details: {
               requested: totalHours,
               available: leaveBalance.totalHours - currentUsedHours,
@@ -203,10 +182,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response, { status: 201 });
   } catch (error) {
-    console.error('Error creating leave:', error);
-    return NextResponse.json(
-      { error: 'Failed to create leave' },
-      { status: 500 }
-    );
+    console.error("Error creating leave:", error);
+    return NextResponse.json({ error: "Failed to create leave" }, { status: 500 });
   }
 }

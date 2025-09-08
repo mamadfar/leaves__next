@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
   try {
@@ -7,10 +7,7 @@ export async function POST(request: NextRequest) {
     const { employeeId } = body;
 
     if (!employeeId) {
-      return NextResponse.json(
-        { error: 'Employee ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
     }
 
     const user = await prisma.employee.findUnique({
@@ -24,18 +21,12 @@ export async function POST(request: NextRequest) {
     });
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Invalid employee ID' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Invalid employee ID" }, { status: 401 });
     }
 
     return NextResponse.json({ user });
   } catch (error) {
-    console.error('Error during login:', error);
-    return NextResponse.json(
-      { error: 'Login failed' },
-      { status: 500 }
-    );
+    console.error("Error during login:", error);
+    return NextResponse.json({ error: "Login failed" }, { status: 500 });
   }
 }

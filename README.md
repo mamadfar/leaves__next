@@ -1,6 +1,6 @@
 # Leave Management System - Next.js Implementation
 
-This is a Next.js implementation of the Leave Management System, recreating the functionality from the original Angular application. The application allows employees to manage their leave requests and managers to approve them.
+This is a Next.js implementation of the Leave Management System. The application allows employees to manage their leave requests and managers to approve them.
 
 ## Features
 
@@ -26,29 +26,32 @@ This is a Next.js implementation of the Leave Management System, recreating the 
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - pnpm (recommended) or npm
 
 ### Installation
 
 1. **Install dependencies**:
+
    ```bash
    pnpm install
    ```
 
 2. **Set up the database**:
+
    ```bash
    # Generate Prisma client
    pnpm db:generate
-   
+
    # Push the schema to create the database
    pnpm db:push
-   
+
    # Seed the database with sample data
    pnpm db:seed
    ```
 
 3. **Start the development server**:
+
    ```bash
    pnpm dev
    ```
@@ -61,11 +64,13 @@ This is a Next.js implementation of the Leave Management System, recreating the 
 The application comes with pre-seeded demo users for testing:
 
 ### Employees
+
 - **K012345** - Mohammad Farhadi (Employee, reports to K000001)
 - **K012346** - Bertold Oravecz (Employee, reports to K000001)
 - **K012347** - Carol Davis (Employee, reports to K000002)
 
 ### Managers
+
 - **K000001** - Velthoven Jeroen-van (Manager)
 - **K000002** - Eszter Nasz (Manager)
 
@@ -118,19 +123,23 @@ src/
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/auth` - Login with employee ID
 
 ### Employees
+
 - `GET /api/employees` - Get all employees
 - `GET /api/employees/{id}/leaves` - Get employee's leaves
 - `GET /api/employees/{id}/balance` - Get employee's leave balance
 
 ### Leaves
+
 - `POST /api/leaves` - Create new leave request
 - `DELETE /api/leaves/{id}` - Cancel leave request
 - `PATCH /api/leaves/{id}/status` - Update leave status (approve/reject)
 
 ### Managers
+
 - `GET /api/managers/{id}/leaves` - Get subordinate leaves
 
 ## Development Commands
@@ -152,15 +161,6 @@ pnpm db:seed              # Seed database
 pnpm lint                 # Run ESLint
 ```
 
-## Key Differences from Angular Version
-
-1. **State Management**: Uses React Query instead of Angular services with RxJS
-2. **Routing**: Next.js App Router instead of Angular Router
-3. **Forms**: React hooks and state instead of Angular Reactive Forms
-4. **HTTP Client**: Axios instead of Angular HTTP Client
-5. **Styling**: Same Tailwind CSS approach
-6. **Authentication**: Context API instead of Angular services
-
 ## Future Enhancements
 
 - [ ] Session management and JWT tokens
@@ -171,15 +171,3 @@ pnpm lint                 # Run ESLint
 - [ ] Advanced reporting and analytics
 - [ ] Mobile responsiveness improvements
 - [ ] Internationalization
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## License
-
-This project is for demonstration purposes as part of a technical assessment.

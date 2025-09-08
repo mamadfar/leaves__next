@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { ILeave } from '@/types/Leave.type';
-import { useDeleteLeave, useUpdateLeaveStatus } from '@/hooks/useLeaves';
+import { useState } from "react";
+import { ILeave } from "@/types/Leave.type";
+import { useDeleteLeave, useUpdateLeaveStatus } from "@/hooks/useLeaves";
 
 interface LeavesListProps {
   leaves: ILeave[];
@@ -25,49 +25,49 @@ export default function LeavesList({
   const updateStatusMutation = useUpdateLeaveStatus();
 
   const formatDate = (dateString: string | Date): string => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   const getStatusClass = (status: string): string => {
     switch (status) {
-      case 'APPROVED':
-        return 'bg-green-100 text-green-800';
-      case 'REQUESTED':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'REJECTED':
-      case 'CLOSED':
-        return 'bg-red-100 text-red-800';
+      case "APPROVED":
+        return "bg-green-100 text-green-800";
+      case "REQUESTED":
+        return "bg-yellow-100 text-yellow-800";
+      case "REJECTED":
+      case "CLOSED":
+        return "bg-red-100 text-red-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const canDeleteLeave = (leave: ILeave): boolean => {
     const startDate = new Date(leave.startOfLeave);
     const now = new Date();
-    return startDate > now && leave.status !== 'CLOSED' && leave.status !== 'APPROVED';
+    return startDate > now && leave.status !== "CLOSED" && leave.status !== "APPROVED";
   };
 
   const handleDeleteLeave = async (leaveId: string) => {
-    if (confirm('Are you sure you want to cancel this leave request?')) {
+    if (confirm("Are you sure you want to cancel this leave request?")) {
       try {
         await deleteLeaveMutation.mutateAsync({ leaveId, employeeId: currentUserId });
       } catch (error) {
-        console.error('Error deleting leave:', error);
-        alert('Error canceling leave request. Please try again.');
+        console.error("Error deleting leave:", error);
+        alert("Error canceling leave request. Please try again.");
       }
     }
   };
 
   const handleApproveLeave = async (leaveId: string, approved: boolean = true) => {
-    const status = approved ? 'APPROVED' : 'REJECTED';
-    const action = approved ? 'approve' : 'reject';
+    const status = approved ? "APPROVED" : "REJECTED";
+    const action = approved ? "approve" : "reject";
 
     if (confirm(`Are you sure you want to ${action} this leave request?`)) {
       try {
@@ -110,9 +110,9 @@ export default function LeavesList({
     <div className="bg-white shadow rounded-lg overflow-hidden">
       <div className="px-4 py-5 sm:p-6">
         <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-          {canApprove ? 'Pending Approvals' : 'Leave Requests'}
+          {canApprove ? "Pending Approvals" : "Leave Requests"}
         </h3>
-        
+
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -153,7 +153,7 @@ export default function LeavesList({
                   </td>
                   {showEmployee && (
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {leave.employee?.name || 'Unknown'}
+                      {leave.employee?.name || "Unknown"}
                     </td>
                   )}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -172,13 +172,15 @@ export default function LeavesList({
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {leave.leaveType === 'SPECIAL' ? `Special (${leave.specialLeaveType})` : 'Regular'}
+                    {leave.leaveType === "SPECIAL"
+                      ? `Special (${leave.specialLeaveType})`
+                      : "Regular"}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {leave.totalHours}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                    {canApprove && leave.status === 'REQUESTED' && (
+                    {canApprove && leave.status === "REQUESTED" && (
                       <>
                         <button
                           onClick={() => handleApproveLeave(leave.leaveId, true)}

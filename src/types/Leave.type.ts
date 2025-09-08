@@ -1,4 +1,4 @@
-import { LeaveStatus, LeaveType, SpecialLeaveType } from '@prisma/client';
+import { LeaveStatus, LeaveType, SpecialLeaveType } from "@prisma/client";
 
 export interface ILeave {
   leaveId: string;
