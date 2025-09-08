@@ -3,11 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { useEmployeeLeaves, useManagerLeaves } from "@/hooks/useLeaves";
+import { useEmployeeLeaves, useManagerLeaves } from "@hooks/useLeaves";
 import { useLeaveBalance } from "@/hooks/useLeaveBalance";
-import LeaveForm from "@/components/LeaveForm";
-import LeavesList from "@/components/LeavesList";
-import LeaveBalance from "@/components/LeaveBalance";
+import { LeaveForm, LeavesList, LeaveBalance } from "@components/index";
 
 export default function Dashboard() {
   const { isAuthenticated, getCurrentUser, logout, isManager } = useAuth();

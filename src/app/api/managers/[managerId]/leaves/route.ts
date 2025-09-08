@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(request: NextRequest, { params }: { params: { managerId: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ managerId: string }> }
+) {
   try {
-    const { managerId } = params;
+    const { managerId } = await params;
 
     // Get subordinates
     const subordinates = await prisma.employee.findMany({

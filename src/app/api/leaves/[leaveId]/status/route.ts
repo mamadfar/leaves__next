@@ -3,9 +3,12 @@ import { prisma } from "@/lib/prisma";
 import { LeaveBusinessRulesService } from "@/lib/leave-business-rules";
 import { LeaveStatus, LeaveType } from "@prisma/client";
 
-export async function PATCH(request: NextRequest, { params }: { params: { leaveId: string } }) {
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ leaveId: string }> }
+) {
   try {
-    const { leaveId } = params;
+    const { leaveId } = await params;
     const body = await request.json();
     const { status, approverId } = body;
 

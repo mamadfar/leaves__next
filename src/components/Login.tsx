@@ -101,6 +101,22 @@ export default function Login() {
             </button>
             <button
               type="button"
+              onClick={() => quickLogin("K012346")}
+              disabled={loginMutation.isPending}
+              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+            >
+              Employee: Bertold Oravecz
+            </button>
+            <button
+              type="button"
+              onClick={() => quickLogin("K012347")}
+              disabled={loginMutation.isPending}
+              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+            >
+              Employee: Carol Davis
+            </button>
+            <button
+              type="button"
               onClick={() => quickLogin("K000001")}
               disabled={loginMutation.isPending}
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"

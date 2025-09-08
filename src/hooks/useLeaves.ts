@@ -49,6 +49,10 @@ export const useUpdateLeaveStatus = () => {
     onSuccess: (data) => {
       // Invalidate relevant queries
       queryClient.invalidateQueries({ queryKey: ["leaves"] });
+      // Also invalidate leave balance for the employee whose leave was updated
+      if (data.employee?.employeeId) {
+        queryClient.invalidateQueries({ queryKey: ["leaveBalance", data.employee.employeeId] });
+      }
     },
   });
 };
